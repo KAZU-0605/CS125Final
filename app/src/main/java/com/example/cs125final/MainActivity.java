@@ -28,38 +28,31 @@ public class MainActivity extends AppCompatActivity {
     private CountryAdapter aAdapter;
     private static RequestQueue requestQueue;
     private static final String TAG = "cs125final:Main";
-    private TextView startView;
-    private TextView endView;
+    //private TextView startView;
+    //private TextView endView;
     private TextView amountView;
     private TextView outputView;
     private String startCurrency;
     private String endCurrency;
     private double exchangeAmount;
+    private Spinner dropDown1;
+    private Spinner dropDown2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startView = findViewById(R.id.start);
-        endView = findViewById(R.id.end);
+        //startView = findViewById(R.id.start);
+        //endView = findViewById(R.id.end);
         amountView = findViewById(R.id.amount);
         outputView = findViewById(R.id.result);
         requestQueue = Volley.newRequestQueue(this);
 
         Button convert = findViewById(R.id.convert);
-        convert.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(TAG, "Generate Button was pressed.");
-                try {
-                    startCurrency = startView.getText().toString();
-                    startAPICall(startCurrency);
-                } catch (Exception ignored) { }
-            }
-        });
         firstList();
-        Spinner dropDown1 = findViewById(R.id.spinner_start);
+        dropDown1 = findViewById(R.id.spinner_start);
         aAdapter = new CountryAdapter(this, acountrylist);
         dropDown1.setAdapter(aAdapter);
         dropDown1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -68,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 Countryelements clicked = (Countryelements) parent.getItemAtPosition(position);
                 String clickedName = clicked.getCountryName();
                 Toast.makeText(MainActivity.this, clickedName + " selected", Toast.LENGTH_SHORT).show();
+                startCurrency = clickedName;
             }
 
             @Override
@@ -75,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        Spinner dropDown2 = findViewById(R.id.spinner_end);
+        dropDown2 = findViewById(R.id.spinner_end);
         aAdapter = new CountryAdapter(this, acountrylist);
         dropDown2.setAdapter(aAdapter);
         dropDown2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -84,11 +78,22 @@ public class MainActivity extends AppCompatActivity {
                 Countryelements clicked = (Countryelements) parent.getItemAtPosition(position);
                 String clickedName = clicked.getCountryName();
                 Toast.makeText(MainActivity.this, clickedName + " selected", Toast.LENGTH_SHORT).show();
+                endCurrency = clickedName;
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+        convert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "Generate Button was pressed.");
+                try {
+                    //startCurrency = startView.getText().toString();
+                    startAPICall(startCurrency);
+                } catch (Exception ignored) { }
             }
         });
     }
@@ -130,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
     private void finishAPICall (JSONObject response) {
         try {
             JSONObject result = response.getJSONObject("rates");
-            endCurrency =  endView.getText().toString();
             exchangeAmount = Double.valueOf(amountView.getText().toString());
             double rate = result.getDouble(endCurrency);
             outputView.setText(Double.toString(exchangeAmount * rate));
