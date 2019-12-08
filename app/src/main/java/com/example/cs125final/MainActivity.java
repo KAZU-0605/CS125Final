@@ -101,9 +101,12 @@ public class MainActivity extends AppCompatActivity {
         acountrylist = new ArrayList<>();
         acountrylist.add(new Countryelements("CNY", R.drawable.china));
         acountrylist.add(new Countryelements("USD", R.drawable.usa));
-        acountrylist.add(new Countryelements("R", R.drawable.russia));
+        acountrylist.add(new Countryelements("RUB", R.drawable.russia));
         acountrylist.add(new Countryelements("CAD", R.drawable.canada));
         acountrylist.add(new Countryelements("JPY", R.drawable.japan));
+        acountrylist.add(new Countryelements("AUD", R.drawable.australia));
+        acountrylist.add(new Countryelements("HKD", R.drawable.hongkong));
+        acountrylist.add(new Countryelements("TRY", R.drawable.turkey));
     }
 
     private void startAPICall(final String start) {
